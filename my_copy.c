@@ -4,10 +4,13 @@
 void file_copy(FILE *src, FILE *dest);
 
 int main(int argc, char **argv) {
-// we assume that argv[1] is the path
-	//checking if a path was specified, if not, we use stdin
-	FILE *file_src;
-	FILE *file_dest;
+// we assume that argv[1,2] is the path
+	//checking if a path was specified,
+	//if not, we use stdin for source and stdout for destination
+
+	FILE *file_src; //will copy from this file
+	FILE *file_dest; // to this one
+
 	if (*argv[1] == '-'){
 		file_src = stdin;
 	} else{
@@ -25,7 +28,9 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Error occurred\n");
 		return(1);
 	}
+
 	file_copy (file_src, file_dest);
+
 	fclose(file_src);
 	fclose(file_dest);
 
@@ -35,6 +40,7 @@ int main(int argc, char **argv) {
 
 
 void file_copy(FILE *src, FILE *dest){
+	// copying src interior to dest
 	char buffer[2];
 	while (fgets(buffer, sizeof(buffer), src)){
 		fwrite(buffer, sizeof(char), 1, dest);
