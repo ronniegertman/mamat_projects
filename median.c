@@ -23,18 +23,24 @@ int main(int argc, char **argv) {
 	//allocating memory for the grades array
 	int num_of_lines = count_lines(file);
 	int* nums_array = (int *)malloc(num_of_lines * sizeof(int));
+	rewind(file);
+
+	if (nums_array == NULL){
+		return (1);
+	}
 
 
-	char line[33]; //buffer size string
+
+	char line[40]; //buffer size string
 	int i = 0;
-	//while to read each line in the file
+
+//while to read each line in the file
 	while(fgets(line, sizeof(line), file)){
-		printf("in loop");
 		int num = atoi(line); //convert from string to int
 
 		//checking if grade is in range
 		if (!grade_in_range(num)){
-			fprintf(stderr, "Error at line %d: invalid input %d\n", i, num);
+			fprintf(stderr, "Error at line %d: invalid input %d\n", i+1, num);
 			return(1);
 		}
 
@@ -44,7 +50,6 @@ int main(int argc, char **argv) {
 	}
 	printf("num of lines %d\n", num_of_lines);
 
-//	printf("%d\n", nums_array[0]);
 	fprintf(stdout, "%d\n", median(nums_array, num_of_lines));
 
 	free(nums_array);
@@ -53,6 +58,7 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
+//wait is size of line????
 int count_lines(FILE *file){
 	//calculating amount of lines in a file, assuming it contains only integers
 	int lines = 0;
@@ -76,5 +82,5 @@ int compare(const void *a, const void *b){
 int median(int *nums, int num_of_lines){
 	//calculating the median grade
 	qsort(nums, num_of_lines, sizeof(nums[0]), compare);
-	return nums[(num_of_lines + 1)/2];
+	return nums[(num_of_lines + 1)/2 - 1];
 }
