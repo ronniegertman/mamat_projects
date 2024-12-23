@@ -48,7 +48,6 @@ int main(int argc, char **argv) {
 		nums_array[i] = num;
 		i++;
 	}
-	printf("num of lines %d\n", num_of_lines);
 
 	fprintf(stdout, "%d\n", median(nums_array, num_of_lines));
 
@@ -57,6 +56,7 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
+
 
 //wait is size of line????
 int count_lines(FILE *file){
@@ -82,5 +82,5 @@ int compare(const void *a, const void *b){
 int median(int *nums, int num_of_lines){
 	//calculating the median grade
 	qsort(nums, num_of_lines, sizeof(nums[0]), compare);
-	return nums[(num_of_lines + 1)/2 - 1];
+	return nums[(num_of_lines - 1)/2];
 }
