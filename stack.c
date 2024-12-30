@@ -1,6 +1,4 @@
 #include "stack.h"
-#include <stdlib.h>
-#include <stdbool.h>
 
 struct stack_elem{
 	elem_t value;
@@ -22,7 +20,6 @@ struct stack{
 
 struct stack* stack_create(size_t max, clone_t clone, destroy_t destroy,
 		print_t print){
-	//creates new empty stack, max-sized.
 	struct stack* new_stack = (struct stack*)malloc(sizeof(struct stack));
 	if (new_stack == NULL){
 		return NULL;
@@ -36,8 +33,7 @@ struct stack* stack_create(size_t max, clone_t clone, destroy_t destroy,
 	return new_stack;
 }
 
-result_t stack_destroy(struct stack* this_stack){
-	//destroying the stack
+enum result stack_destroy(struct stack* this_stack){
 	if (this_stack == NULL) {
 	        return FAIL;
 	}
@@ -63,12 +59,11 @@ result_t stack_destroy(struct stack* this_stack){
 	return SUCCESS;
 }
 
-result_t stack_push(struct stack* this_stack, elem_t to_push){
+enum result stack_push(struct stack* this_stack, elem_t to_push){
 	//unable to push if stack is full
 	if(this_stack == NULL || this_stack->current_size == this_stack->max){
 		return FAIL;
 	}
-	//creating a new stack element, cloning to_push
 	struct stack_elem* new_element
 	= (struct stack_elem*) malloc(sizeof(struct stack_elem));
 	if(new_element == NULL){
@@ -103,7 +98,6 @@ void stack_pop(struct stack* this_stack){
 }
 
 elem_t stack_peek(struct stack* this_stack){
-	//returning stack's head value
 	if(this_stack == NULL || this_stack->current_size == 0){
 		return NULL;
 	}
@@ -111,7 +105,6 @@ elem_t stack_peek(struct stack* this_stack){
 }
 
 size_t stack_size(struct stack* this_stack){
-	//returning stack size
 	if(this_stack == NULL || this_stack->current_size == 0){
 		return 0;
 	}
@@ -123,7 +116,6 @@ bool stack_is_empty(struct stack* this_stack){
 }
 
 size_t stack_capacity(struct stack* this_stack){
-	//calculating the amount of free space in the stack
 	if(this_stack == NULL){
 		return 0;
 	}
@@ -131,7 +123,6 @@ size_t stack_capacity(struct stack* this_stack){
 }
 
 void stack_print(struct stack* this_stack){
-	//printing stack from head to tail
 	if(this_stack == NULL){
 			return;
 	}
