@@ -210,6 +210,7 @@ int grades_add_student(struct grades *grades, const char *name, int id){
 	}
 	grades->size++;
 	//freeing allocated memory that got cloned
+	list_destroy(new_student.grades);
 	free(copied_name);
 	return 0;
 }
