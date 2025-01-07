@@ -48,7 +48,7 @@ int clone_grade(void *element, void **output){
 	}
 
 	//copying the name using memory allocation
-	char* copied_name = (char *)malloc(sizeof(grade_element->course_name));
+	char* copied_name = (char *)malloc(strlen(grade_element->course_name) + 1);
 		if(copied_name == NULL){
 			free(new_grade);
 			return 1;
@@ -58,7 +58,7 @@ int clone_grade(void *element, void **output){
 	new_grade->grade = grade_element->grade;
 
 	//casting new element to output
-	*(struct grade_list_element*)(*output) = *new_grade;
+	*output = (void*)new_grade;
 	return 0; // Success
 }
 
@@ -113,7 +113,7 @@ int clone_student(void* element, void** output){
 		return 1;
 	}
 	//copying the name - memory allocation
-	char* copied_name = (char *)malloc(sizeof(student->name));
+	char* copied_name = (char *)malloc(strlen(student->name) + 1);
 	if(copied_name == NULL){
 		list_destroy(copied_grades);
 		return 1;
@@ -133,7 +133,7 @@ int clone_student(void* element, void** output){
 	new_student->grades = copied_grades;
 	new_student->name = copied_name;
 	new_student->id = student->id;
-	*(struct student_list_element*)(*output) = *new_student;
+	*output = (void*)new_student;
 	return 0; // Success
 }
 
@@ -191,7 +191,7 @@ int grades_add_student(struct grades *grades, const char *name, int id){
 	//list push clones the element
 	struct student_list_element new_student ;
 	new_student.id = id;
-	char* copied_name = (char *)malloc(sizeof(name));
+	char* copied_name = (char *)malloc(strlen(name) + 1);
 		if(copied_name == NULL){
 			return 1;
 		}
@@ -244,7 +244,7 @@ int grades_add_grade(struct grades *grades,
 		}
 	struct grade_list_element new_grade;
 	new_grade.grade = grade;
-	char* copied_name = (char *)malloc(sizeof(name));
+	char* copied_name = (char *)malloc(strlen(name) + 1);
 			if(copied_name == NULL){
 				return 1;
 			}
@@ -260,44 +260,87 @@ int grades_add_grade(struct grades *grades,
 	return 0; //Success
 }
 
-float grades_calc_avg(struct grades *grades, int id, char **out){
-	struct student_list_element* student = grades_find_id(grades, id);
-	// setting the out to NULL as default, if all goes well it will be changed
-	out = NULL;
-	if(grades == NULL || student == NULL){
-		return -1;
-	}
-	//no courses
-	if(list_size(student->grades) == 0){
-		return 0;
-	}
-	struct list* list = student->grades;
-	struct iterator* tmp = list_begin(list);
-	//calculating average
-	int sum = 0;
-	while(tmp != NULL){
-		struct grade_list_element* grade = list_get(tmp);
-		sum += grade->grade;
-		tmp = list_next(tmp);
-	}
+//float grades_calc_avg(struct grades *grades, int id, char **out){
+//	struct student_list_element* student = grades_find_id(grades, id);
+//	// setting the out to NULL as default, if all goes well it will be changed
+//	*out = NULL;
+//	if(grades == NULL || student == NULL){
+//		return -1;
+//	}
+//	//no courses
+//	if(list_size(student->grades) == 0){
+//		return 0;
+//	}
+//	struct list* list = student->grades;
+//	struct iterator* tmp = list_begin(list);
+//	//calculating average
+//	int sum = 0;
+//	while(tmp != NULL){
+//		struct grade_list_element* grade = list_get(tmp);
+//		sum += grade->grade;
+//		tmp = list_next(tmp);
+//	}
+//
+//	//setting the output to the student's name
+//	char* copied_name = (char *)malloc(strlen(student->name) + 1);
+//	if(copied_name == NULL){
+//		return -1;
+//	}
+//	strcpy(copied_name, student->name);
+//	*out = copied_name;
+//
+//	return (float)(sum/list_size(list));
+//}
 
-	//setting the output to the student's name
-	char* copied_name = (char *)malloc(sizeof(student->name));
-	if(copied_name == NULL){
-		return -1;
-	}
-	strcpy(copied_name, student->name);
-	*out = copied_name;
+float grades_calc_avg(struct grades *grades, int id, char **out) {
+    if (grades == NULL || out == NULL) {
+        return -1;
+    }
 
-	return (float)(sum/list_size(list));
+    // Find the student by ID
+    struct student_list_element* student = grades_find_id(grades, id);
+    if (student == NULL) {
+        *out = NULL;
+        return -1;
+    }
+
+    char* copied_name = (char*)malloc(strlen(student->name) + 1);
+    if (copied_name == NULL) {
+	   *out = NULL;
+	   return -1;
+   }
+   strcpy(copied_name, student->name);
+   *out = copied_name;
+    // If the student has no courses
+    if (list_size(student->grades) == 0) {
+        return 0;
+    }
+
+    // Calculate the average grade
+    struct list* grade_list = student->grades;
+    struct iterator* iter = list_begin(grade_list);
+    int sum = 0;
+    int count = 0;
+
+    while (iter != NULL) {
+        struct grade_list_element* grade = (struct grade_list_element*)list_get(iter);
+        sum += grade->grade;
+        count++;
+        iter = list_next(iter);
+    }
+
+
+    // Return the average grade
+    return (float)sum / count;
 }
+
 
 int grades_print_student(struct grades *grades, int id){
 	struct student_list_element* student = grades_find_id(grades, id);
 	if(grades == NULL || student == NULL){
 		return 1;
 	}
-	printf("%s %d: ", student->name, student->id);
+	printf("%s %d:", student->name, student->id);
 	struct list* list = student->grades;
 	if(list_size(list) == 0){
 		printf("\n");
@@ -306,7 +349,7 @@ int grades_print_student(struct grades *grades, int id){
 	struct iterator* tmp = list_begin(list);
 	//we will print the first grade manually because of the lack of a comma
 	struct grade_list_element* first_grade = list_get(tmp);
-	printf("%s %d", first_grade->course_name, first_grade->grade);
+	printf(" %s %d", first_grade->course_name, first_grade->grade);
 	tmp = list_next(tmp);
 	while(tmp != NULL){
 		struct grade_list_element* grade = list_get(tmp);
