@@ -2,6 +2,7 @@
 #include "linked-list.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 struct grade_list_element{
 	int grade;
@@ -188,32 +189,33 @@ int grades_add_student(struct grades *grades, const char *name, int id){
 	}
 	//no need to allocate memory for the student because
 	//list push clones the element
-	struct student_list_element* new_student;
-	new_student->id = id;
+	struct student_list_element new_student ;
+	new_student.id = id;
 	char* copied_name = (char *)malloc(sizeof(name));
 		if(copied_name == NULL){
 			return 1;
 		}
 	strcpy(copied_name, name);
-	new_student->grades = list_init(clone_grade, destroy_grade);
-	if (new_student->grades == NULL){
+	new_student.grades = list_init(clone_grade, destroy_grade);
+	if (new_student.grades == NULL){
 		free(copied_name);
 		return 1;
 	}
-	new_student->name = copied_name;
+	new_student.name = copied_name;
 	//trying to add the student to the grades struct
-	if (list_push_back(grades->students,new_student) == 1){
+	if (list_push_back(grades->students,&new_student) == 1){
 		free(copied_name);
-		list_destroy(new_student->grades);
+		list_destroy(new_student.grades);
 		return 1;
 	}
 	grades->size++;
-	//freeing aloucated memory that got cloned
+	//freeing allocated memory that got cloned
 	free(copied_name);
 	return 0;
 }
-
-int grades_find_course_name(struct student_list_element* student, char* name){
+//helper function
+int grades_find_course_name(struct student_list_element* student,
+		const char* name){
 	struct list* list = student->grades;
 	struct iterator* tmp = list_begin(list);
 	while(tmp != NULL){
@@ -240,16 +242,16 @@ int grades_add_grade(struct grades *grades,
 			grades_find_course_name(student, name) == 1){
 			return 1;
 		}
-	struct grade_list_element* new_grade;
-	new_grade->grade = grade;
+	struct grade_list_element new_grade;
+	new_grade.grade = grade;
 	char* copied_name = (char *)malloc(sizeof(name));
 			if(copied_name == NULL){
 				return 1;
 			}
 	strcpy(copied_name, name);
-	new_grade->course_name = copied_name;
+	new_grade.course_name = copied_name;
 
-	if (list_push_back(student->grades,new_grade) == 1){
+	if (list_push_back(student->grades,&new_grade) == 1){
 			free(copied_name);
 			return 1;
 		}
