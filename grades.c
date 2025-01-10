@@ -220,8 +220,8 @@ int grades_find_course_name(struct student_list_element* student,
 	struct iterator* tmp = list_begin(list);
 	while(tmp != NULL){
 		struct grade_list_element* grade = list_get(tmp);
-		if (strcmp(grade->course_name, name)){
-			return 0;
+		if (strcmp(grade->course_name, name) == 0){
+			return 0; //not adding the grade
 		}
 		tmp = list_next(tmp);
 	}
@@ -239,7 +239,7 @@ int grades_add_grade(struct grades *grades,
 		return 1;
 	}
 	if(grade < 0 || grade > 100 ||
-			grades_find_course_name(student, name) == 1){
+			grades_find_course_name(student, name) == 0){
 			return 1;
 		}
 	struct grade_list_element new_grade;
