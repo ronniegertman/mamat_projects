@@ -1,0 +1,33 @@
+#ifndef STRING_H
+#define STRING_H
+#include "generic-string.h"
+
+class String: public GenericString{
+	char* data;
+	int length;
+
+public:
+	String(const char* str = "");
+	String (const String &str);
+	String& operator=(const char *str);
+	~String();
+
+	bool operator==(const char *str) const;
+	bool operator==(const String &other) const;
+	
+	StringArray split(const char *delimiters) const;
+	int to_integer() const;
+	String& trim();
+
+	String& as_string();
+    const String& as_string() const;
+
+    //getters
+    int getLength() const;
+    char* getData() const;
+
+
+};
+
+GenericString* make_string(const char *str);
+#endif
