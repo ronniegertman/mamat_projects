@@ -15,6 +15,7 @@ public:
 
 	void addString(const char* str);
 	GenericString* getValue(const int index) const;
-}
+	int length() const;
+};
 
 #ifndef

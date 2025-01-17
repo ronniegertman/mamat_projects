@@ -33,3 +33,7 @@ void addString(const char* str){
 GenericString* getValue(const int index) const{
 	return this->array[index];
 }
+
+int length() const{
+	return array.size();
+}
