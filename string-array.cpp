@@ -7,13 +7,13 @@ StringArray(){
 }
 
 StringArray(const StringArray& other){
-	this-> size = other.size;
-	for (GenericString* str : other.strings) {
+	this->size = other.size;
+	for (GenericString* str : other.array) {
             if (str) {
             	GenericString* string = new String(str->as_string()); //string copy constructor called bli neder
-                strings.push_back(string);
+                this->array.push_back(string);
             } else {
-                strings.push_back(nullptr);
+                this->array.push_back(nullptr);
             }
         }
 }

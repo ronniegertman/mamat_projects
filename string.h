@@ -2,7 +2,7 @@
 #define STRING_H
 #include "generic-string.h"
 
-class String: public GenericString{
+class String: public GenericString {
 	char* data;
 	int length;
 
@@ -23,8 +23,8 @@ public:
     const String& as_string() const;
 
     //getters
-    int getLength() const;
-    char* getData() const;
+    int get_length() const;
+    char* get_data() const;
 
 
 };

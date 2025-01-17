@@ -12,9 +12,9 @@ String(const char* str = "")
 
 //copy constructor
 String (const String &str)
-: length(str.getLength()), data(new char[length +1])
+: length(str.get_length()), data(new char[length +1])
 {
-	strcpy(data, str.getData());
+	strcpy(data, str.get_data());
 }
 
 //destructor
@@ -23,19 +23,20 @@ String (const String &str)
 }
 
 //getters
-int getLength() const{
+int get_length() const{
 	return this->length;
 }
-char* getData() const{
+char* get_data() const{
 	return this->data;
 }
 
+//the text in str will be copied to this
 String& operator=(const char *str){
 	delete[] this->data;
 	if (str == NULL){
 		this->data = NULL;
 		this->length = 0;
-		return NULL;
+		return *this;
 	}
 	int length = strlen(str);
 	this->length = length;
@@ -53,6 +54,7 @@ bool operator==(const char *str) const{
 }
 
 bool operator==(const String &other) const{
+	//NULL?
 	return (strcmp(other.data, this->data) == 0);
 }
 
@@ -96,11 +98,11 @@ String& trim() {
 }
 
 String& as_string(){
-	return dynamic_cast<String&>(GenericString);
+	return dynamic_cast<String&>(*this);
 }
 
 const String& as_string() const{
-	return dynamic_cast<String&>(GenericString);
+	return dynamic_cast<const String&>(*this);
 }
 
 GenericString* make_string(const char *str){
