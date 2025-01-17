@@ -6,6 +6,7 @@ class Port: public GenericField{
 	enum direction dir;
 	int low;
 	int high;
+	int extract_port_from_packet(StringArray packet_words);
 public:
 	Port(String& rule);
 	~Port();

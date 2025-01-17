@@ -8,31 +8,36 @@ using namespace Port;
 Port(String& rule){
 	rule->trim();
 	StringArray words = rule->split(" =/.");
-	GenericString* first_word = words.getValue(0); //words[0] is genericString*, 
+	GenericString* direction_port = words.getValue(0); //words[0] is genericString*, 
 	//as_string returns String&
-	if(first_word == "src-port"){
+	if(direction_port == "src-port"){
 		this->dir = SRC;
-	}else if(first_word == "dst-port"){
+	}else if(direction_port == "dst-port"){
 		this->dir = DST;
 	}
 
-	StringArray range = words.getValue(1)->as_string().split("-");
-	this->high = range.getValue(1)->as_string().to_integer();
-	this->low = range.getValue(0)->as_string().to_integer();
+	StringArray range = words.getValue(1)->split("-");
+
+	this->low = range.getValue(0)->to_integer();
+	this->high = range.getValue(1)->to_integer();
 }
+
+
+int extract_port_from_packet(StringArray packet_words){
+	switch(this->dir){
+		default:
+		case SRC:
+			return packet_words.getValue(11)->to_integer();
+		break;	
+		case DST:
+			return packet_words.getValue(13)->to_integer();
+		break;
+	}
+};
 
 bool match(const GenericString &packet) const{
 	packet->trim();
 	StringArray packet_words = packet.split(",=. ");
-	switch(this->dir){
-		case SRC:
-			int src_port = words.getValue(11)->to_integer();
-			return (src_port >= this->low && src_port <= this->high);
-		break;	
-		case DST:
-			int src_port = words.getValue(13)->to_integer();
-			return (src_port >= this->low && src_port <= this->high);
-		break;
-	}
-	return false;
+	int port = this->extract_port_from_packet(packet_words);
+	return (port >= this->low) && (port <= this->high);
 }
