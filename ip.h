@@ -4,12 +4,12 @@
 
 class ip: public GenericField {
 	int flag; //0:src 1:dst
-	int dont_care;
+	int mask;
 	unsigned int address;
 public:
 	ip(String& rule);
 	~ip();
-	bool match(const GenericString &packet) const;
+	bool match(const GenericString &packet) const;  
 	bool handle_src_ip(const StringArray packet_words) const;
 	bool handle_dst_ip(const StringArray packet_words) const;
 

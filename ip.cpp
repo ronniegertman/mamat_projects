@@ -17,11 +17,11 @@ ip(String& rule){
 		this->flag = 1;
 	}
  
-	int dont_care = words.getValue(words.length() - 1)->as_string().to_integer(); //words[n] is genericString*
+	int mask = words.getValue(words.length() - 1)->as_string().to_integer(); //words[n] is genericString*
 	//as string returns String&
-	this->dont_care = dont_care;
-	unsigned int ip = 0;
+	this->mask = mask;
 
+	unsigned int ip = 0;
 	for(int i=1; i<4; i++){
 		unsigned int number = words.getValue(i)->as_string().to_integer();
 		ip = ip + number;
@@ -29,13 +29,14 @@ ip(String& rule){
 
 	}
 	ip = ip + words.getValue(4)->as_string().to_integer(); //no need to shift the bits of LSByte
-	this->address = ip >> (32 - this->dont_care);
+	this->address = ip >> (32 - this->mask);
+	//destructor of StringArray called? also in the helper functions
 
 }
 
 bool match(const GenericString &packet) const{
 	packet->trim();
-	StringArray packet_words = packet->split(",=. ");
+	StringArray packet_words = packet.split(",=. ");
 
 	if(this->flag == 0){ //handle src ip
 		char* first_word = packet_words.getValue(0)->as_string().get_data();
@@ -44,8 +45,8 @@ bool match(const GenericString &packet) const{
 		}
 		//copy constructor and destructor?
 		return handle_src_ip(packet_words);
-
 	} 
+	
 	if(this->flag == 1){ //handle dst ip
 		char* dst_word = packet_words.getValue(5)->as_string().get_data();
 		if(strcmp(dst_word, "dst-ip") != 0){
@@ -53,7 +54,7 @@ bool match(const GenericString &packet) const{
 		}
 		return handle_dst_ip(packet_words);
 	}
-	return flase;
+	return false;
 }
 
 bool handle_src_ip(const StringArray packet_words) const{
@@ -65,7 +66,7 @@ bool handle_src_ip(const StringArray packet_words) const{
 
 	}
 	ip = ip + words.getValue(4)->as_string().to_integer(); //no need to shift the bits of LSByte
-	ip = (ip >> (32 - this->dont_care))
+	ip = (ip >> (32 - this->mask))
 	return (ip == this->address);
 }
 
@@ -78,6 +79,6 @@ bool handle_dst_ip(const StringArray packet_words) const{
 
 	}
 	ip = ip + words.getValue(9)->as_string().to_integer(); //no need to shift the bits of LSByte
-	ip = (ip >> (32 - this->dont_care))
+	ip = (ip >> (32 - this->mask))
 	return (ip == this->address);
 }
