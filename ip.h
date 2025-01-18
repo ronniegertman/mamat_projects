@@ -6,9 +6,8 @@ class ip: public GenericField {
 	enum direction dir;
 	int mask;
 	unsigned int address;
+	bool compare_ip_with_mask(unsigned int other_ip);
 
-	bool handle_src_ip(const StringArray packet_words) const;
-	bool handle_dst_ip(const StringArray packet_words) const;
 
 public:
 	ip(String& rule);
