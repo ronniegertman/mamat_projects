@@ -3,12 +3,12 @@
 #include "string.h"
 #include "string-array.h"
 #include <string.h>
-using namespace ip;
+using namespace IP;
 
 static const int BUFFER_SIZE = 32;
 static unsigned int calculate_ip_address(StringArray words, int index);
 
-ip(String& rule){
+IP(String& rule){
 	rule->trim();
 	StringArray words = rule->split(" =/.");
 

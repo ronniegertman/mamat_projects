@@ -2,7 +2,7 @@
 #define IP_H
 #include "generic-field.h"
 enum direction {SRC, DST};
-class ip: public GenericField {
+class IP: public GenericField {
 	enum direction dir;
 	int mask;
 	unsigned int address;
@@ -10,8 +10,8 @@ class ip: public GenericField {
 
 
 public:
-	ip(String& rule);
-	~ip();
+	IP(String& rule);
+	~IP();
 	bool match(const GenericString &packet) const;
 };
 
