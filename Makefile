@@ -1,34 +1,31 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 
-CCLINK = gcc
-LDFLAGS = -L. -linput
+CCXLINK = g++
 RM = rm -rf 
 EXEC = firewall.exe
 
-$(EXEC):
+all: $(EXEC)
 
-libfirewall.so: ip.o port.o string.o 
-	$(CXX) -shared -o libfirewall.so ip.o port.o string.o -L.
+$(EXEC): main.o libfirewall.so libinput.so
+	$(CCXLINK) $(CXXFLAGS) main.o -L. -lfirewall -linput
+
+main.o: main.cpp ip.o port.o string.o 
+	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
+
+libfirewall.so: ip.o port.o string.o string-array.o
+	$(CCXLINK) -shared -o libfirewall.so ip.o port.o string.o string-array.o
 
 string-array.o: string-array.cpp string-array.h generic-string.h
-	$(CXX) $(CXXFLAGS) -cpp string-array.cpp -o string-array.o
+	$(CXX) $(CXXFLAGS) -c string-array.cpp -o string-array.o
 
-string.o: string.cpp string.h generic-string.h
-	$(CXX) $(CXXFLAGS) -cpp string.cpp -o string.o
+string.o: string.cpp string.h generic-string.h string-array.h
+	$(CXX) $(CXXFLAGS) -c string.cpp -o string.o
 
-ip.o: ip.cpp ip.h generic-field.h
-	$(CXX) $(CXXFLAGS) -cpp ip.cpp -o ip.o
+ip.o: ip.cpp ip.h generic-field.h string.h
+	$(CXX) $(CXXFLAGS) -c ip.cpp -o ip.o
 
-port.o: port.cpp port.h generic-field.h
-	$(CXX) $(CXXFLAGS) -cpp port.cpp -o port.o
-
-
-
-libgrades.so: grades.o
-	$(CC) -shared -o libgrades.so grades.o -L. -llinked-list
-
-grades.o: grades.c grades.h
-	$(CC) $(CFLAGS) -c grades.c
+port.o: port.cpp port.h generic-field.h string.h
+	$(CXX) $(CXXFLAGS) -c port.cpp -o port.o
 	
 clean:
-	$(RM) grades.o libgrades.so
+	$(RM) *.o libfirewall.so $(EXEC)
