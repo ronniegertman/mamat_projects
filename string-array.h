@@ -3,6 +3,7 @@
 
 #include "generic-string.h"
 #include <vector>
+#include "string.h"
 
 class StringArray{
 	int size;

@@ -16,6 +16,7 @@ libfirewall.so: ip.o port.o string.o string-array.o
 	$(CCXLINK) -shared -o libfirewall.so ip.o port.o string.o 
 
 string-array.o: string-array.cpp string-array.h generic-string.h
+	#need to recompile String?
 	$(CXX) $(CXXFLAGS) -c string-array.cpp -o string-array.o
 
 string.o: string.cpp string.h generic-string.h string-array.h
