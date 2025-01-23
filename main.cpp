@@ -17,13 +17,14 @@ int main(int argc, char **argv){
 	rule.trim();
 	GenericField *field;
 	if(field_type(rule.get_data()) == PORT_TYPE){ 
-		*field = Port(rule);
+		field = new Port(rule);
 	}
 	else{
-		*field = IP(rule);
+		field = new IP(rule);
 	}
 	GenericField& ref = *field;
 	parse_input(ref);
+	delete field;
 }
 
 // int main(int argc, char **argv){
@@ -33,7 +34,6 @@ int main(int argc, char **argv){
 // 	printf("%s\n", s.getValue(0)->as_string().get_data());
 // 	printf("%s\n", s.getValue(0)->as_string().get_data());
 // 	printf("%s\n", s.getValue(0)->as_string().get_data());
-
 
 // }
 

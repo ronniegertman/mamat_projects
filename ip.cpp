@@ -26,7 +26,7 @@ IP::IP(String& rule){
 static unsigned int calculate_ip_address(StringArray words, int index){
 	unsigned int ip = 0;
 	for(int i=index; i<(index+3); i++){
-		ip += words.getValue(i)->to_integer();
+		ip += words.getValue(i)->as_string().to_integer();
 		ip <<= 8;
 	}
 	ip += words.getValue(index + 3)->to_integer(); // no need to shift LSByte
