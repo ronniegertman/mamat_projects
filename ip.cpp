@@ -3,19 +3,18 @@
 #include "string.h"
 #include "string-array.h"
 #include <string.h>
-using namespace IP;
 
 static const int BUFFER_SIZE = 32;
 static unsigned int calculate_ip_address(StringArray words, int index);
 
-IP(String& rule){
-	rule->trim();
-	StringArray words = rule->split(" =/.");
+IP::IP(String& rule){
+	rule.trim();
+	StringArray words = rule.split(" =/.");
 
 	//using override of == operator in GenericString
-	if(words.getValue(0) == "src-ip"){
+	if(*(words.getValue(0)) == "src-ip"){
 		this->dir = SRC;
-	}else if(words.getValue(0) == "dst-ip"){
+	}else if(*(words.getValue(0)) == "dst-ip"){
 		this->dir = DST;
 	}
  
@@ -26,7 +25,7 @@ IP(String& rule){
 
 static unsigned int calculate_ip_address(StringArray words, int index){
 	unsigned int ip = 0;
-	for(int i=index, i<(index+3); i++){
+	for(int i=index; i<(index+3); i++){
 		ip += words.getValue(i)->to_integer();
 		ip <<= 8;
 	}
@@ -34,13 +33,17 @@ static unsigned int calculate_ip_address(StringArray words, int index){
 	return ip;
 }
 
-bool compare_ip_with_mask(unsigned int other_ip){
+bool IP::compare_ip_with_mask(unsigned int other_ip)const{
 	return (other_ip >> (BUFFER_SIZE - this->mask)) == (this->address >> (BUFFER_SIZE - this->mask));
 }
 
-bool match(const GenericString &packet) const{
-	packet->trim();
-	StringArray packet_words = packet.split(",=. ");
+bool IP::match(const GenericString &packet) const{
+	String* test = new String("fuck");
+	delete test;
+	String packet_as_string = packet.as_string();
+	String copied_packet(packet_as_string);
+	copied_packet.trim();
+	StringArray packet_words = copied_packet.split(",=. ");
 
 	switch (this->dir){
 		default:
