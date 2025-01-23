@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 
+CXXFLAGS = -Wall -Wextra -std=c++17 -fPIC
 CCXLINK = g++
 RM = rm -rf 
 EXEC = firewall.exe

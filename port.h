@@ -1,9 +1,8 @@
 #ifndef PORT_H
 #define PORT_H
 #include "generic-field.h"
-enum direction {SRC, DST};
 class Port: public GenericField{
-	enum direction dir;
+	enum direction {SRC, DST} dir;
 	int low;
 	int high;
 	int extract_port_from_packet(StringArray packet_words) const;

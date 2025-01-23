@@ -1,9 +1,8 @@
 #ifndef IP_H
 #define IP_H
 #include "generic-field.h"
-enum direction {SRC, DST};
 class IP: public GenericField {
-	direction dir;
+	enum direction {SRC, DST} dir;
 	int mask;
 	unsigned int address;
 	bool compare_ip_with_mask(unsigned int other_ip) const;
