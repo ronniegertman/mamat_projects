@@ -2,6 +2,7 @@
 #include "ip.h"
 #include "input.h"
 #include "string.h"
+#include <string.h>
 
 #define PORT_TYPE 1
 #define NOT_PORT_TYPE 0

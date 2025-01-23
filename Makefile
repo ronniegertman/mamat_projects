@@ -9,11 +9,11 @@ all: $(EXEC)
 $(EXEC): main.o libfirewall.so libinput.so
 	$(CCXLINK) $(CXXFLAGS) main.o -L. -lfirewall -linput
 
-main.o: main.cpp ip.o port.o string.o 
+main.o: main.cpp ip.o port.o string.o string-array.o
 	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
 
 libfirewall.so: ip.o port.o string.o string-array.o
-	$(CCXLINK) -shared -o libfirewall.so ip.o port.o string.o string-array.o
+	$(CCXLINK) -shared -o libfirewall.so ip.o port.o string.o 
 
 string-array.o: string-array.cpp string-array.h generic-string.h
 	$(CXX) $(CXXFLAGS) -c string-array.cpp -o string-array.o
