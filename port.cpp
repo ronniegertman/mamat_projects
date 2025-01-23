@@ -3,16 +3,16 @@
 #include "string.h"
 #include "string-array.h"
 #include <string.h>
-using namespace Port;
 
-Port(String& rule){
-	rule->trim();
-	StringArray words = rule->split(" =/.");
+
+Port::Port(String& rule){
+	rule.trim();
+	StringArray words = rule.split(" =/.");
 	GenericString* direction_port = words.getValue(0); //words[0] is genericString*, 
 	//as_string returns String&
-	if(direction_port == "src-port"){
+	if(*direction_port == "src-port"){
 		this->dir = SRC;
-	}else if(direction_port == "dst-port"){
+	}else if(*direction_port == "dst-port"){
 		this->dir = DST;
 	}
 
@@ -23,7 +23,7 @@ Port(String& rule){
 }
 
 
-int extract_port_from_packet(StringArray packet_words){
+int Port::extract_port_from_packet(StringArray packet_words) const{
 	switch(this->dir){
 		default:
 		case SRC:
@@ -35,9 +35,10 @@ int extract_port_from_packet(StringArray packet_words){
 	}
 };
 
-bool match(const GenericString &packet) const{
-	packet->trim();
-	StringArray packet_words = packet.split(",=. ");
+bool Port::match(const GenericString &packet) const{
+	String copied_packet(packet.as_string());
+	copied_packet.trim();
+	StringArray packet_words = copied_packet.split(",=. ");
 	int port = this->extract_port_from_packet(packet_words);
 	return (port >= this->low) && (port <= this->high);
 }

@@ -6,10 +6,10 @@ class Port: public GenericField{
 	enum direction dir;
 	int low;
 	int high;
-	int extract_port_from_packet(StringArray packet_words);
+	int extract_port_from_packet(StringArray packet_words) const;
 public:
 	Port(String& rule);
 	~Port();
 	bool match(const GenericString &packet) const;
-}
+};
 #endif
