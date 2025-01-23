@@ -8,7 +8,7 @@ class Port: public GenericField{
 	int extract_port_from_packet(StringArray packet_words) const;
 public:
 	Port(String& rule);
-	~Port();
+	~Port(){};
 	bool match(const GenericString &packet) const;
 };
 #endif

@@ -5,15 +5,17 @@
 // using namespace String;
 //default constructor
 String::String(const char* str)
-: length(strlen(str)), data(new char[length + 1])
 {
+	this->length = strlen(str);
+	this->data = new char[length + 1];
 	strcpy(data, str);
 }
 
 //copy constructor
 String::String (const String &str)
-: length(str.get_length()), data(new char[length +1])
 {
+	this->length = str.get_length();
+	this->data = new char[length + 1];
 	strcpy(data, str.get_data());
 }
 

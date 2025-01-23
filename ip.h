@@ -10,7 +10,7 @@ class IP: public GenericField {
 
 public:
 	IP(String& rule);
-	~IP();
+	~IP(){};
 	bool match(const GenericString &packet) const;
 };
 

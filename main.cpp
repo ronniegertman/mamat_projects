@@ -3,6 +3,8 @@
 #include "input.h"
 #include "string.h"
 #include <string.h>
+#include <cstdio>
+
 
 #define PORT_TYPE 1
 #define NOT_PORT_TYPE 0
@@ -23,6 +25,17 @@ int main(int argc, char **argv){
 	GenericField& ref = *field;
 	parse_input(ref);
 }
+
+// int main(int argc, char **argv){
+// 	String rule = String(argv[1]);
+// 	rule.trim();
+// 	StringArray s = rule.split("=,");
+// 	printf("%s\n", s.getValue(0)->as_string().get_data());
+// 	printf("%s\n", s.getValue(0)->as_string().get_data());
+// 	printf("%s\n", s.getValue(0)->as_string().get_data());
+
+
+// }
 
 int field_type(char* rule){
 	// a rule must start with dst- or src- followed by either port ot ip
