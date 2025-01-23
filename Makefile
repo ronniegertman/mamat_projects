@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -std=c++11 -fPIC -g
+CXXFLAGS = -Wall -Wextra -std=c++17 -fPIC
 CCXLINK = g++
 RM = rm -rf 
 EXEC = firewall.exe
@@ -7,13 +7,13 @@ EXEC = firewall.exe
 all: $(EXEC)
 
 $(EXEC): main.o libfirewall.so libinput.so
-	$(CCXLINK) $(CXXFLAGS) main.o -L. -lfirewall -L. -linput
+	$(CCXLINK) $(CXXFLAGS) main.o -L. -lfirewall -linput
 
-libfirewall.so: ip.o port.o string.o string-array.
-	$(CCXLINK) -shared -o libfirewall.so ip.o port.o string.o string-array.o -L. -linput
-
-main.o: main.cpp ip.o port.o string.o string-array.o
+main.o: main.cpp ip.h port.h string.h 
 	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
+
+libfirewall.so: ip.o port.o string.o string-array.o
+	$(CCXLINK) -shared -o libfirewall.so ip.o port.o string.o string-array.o
 
 string-array.o: string-array.cpp string-array.h generic-string.h
 	#need to recompile String?
