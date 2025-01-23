@@ -4,7 +4,7 @@
 #include "generic-string.h"
 #include <vector>
 
-class StringArray:{
+class StringArray{
 	int size;
 	std::vector<GenericString*> array;
 
@@ -18,4 +18,4 @@ public:
 	int length() const;
 };
 
-#ifndef
+#endif

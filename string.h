@@ -9,15 +9,15 @@ class String: public GenericString {
 public:
 	String(const char* str = "");
 	String (const String &str);
-	String& operator=(const char *str);
+	GenericString& operator=(const char *str);
 	~String();
 
 	bool operator==(const char *str) const;
-	bool operator==(const String &other) const;
+	bool operator==(const GenericString &other) const;
 	
 	StringArray split(const char *delimiters) const;
 	int to_integer() const;
-	String& trim();
+	GenericString& trim();
 
 	String& as_string();
     const String& as_string() const;

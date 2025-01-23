@@ -2,36 +2,36 @@
 #include "string.h"
 
 
-using namespace String;
+// using namespace String;
 //default constructor
-String(const char* str = "")
+String::String(const char* str = "")
 : length(strlen(str)), data(new char[length + 1])
 {
 	strcpy(data, str);
 }
 
 //copy constructor
-String (const String &str)
+String::String (const String &str)
 : length(str.get_length()), data(new char[length +1])
 {
 	strcpy(data, str.get_data());
 }
 
 //destructor
-~String(){
+String::~String(){
 	delete[] this->data;
 }
 
 //getters
-int get_length() const{
+int String::get_length() const{
 	return this->length;
 }
-char* get_data() const{
+char* String::get_data() const{
 	return this->data;
 }
 
 //the text in str will be copied to this
-String& operator=(const char *str){
+GenericString& String::operator=(const char *str){
 	delete[] this->data;
 	if (str == NULL){
 		this->data = NULL;
@@ -45,7 +45,7 @@ String& operator=(const char *str){
 	return *this;
 }
 
-bool operator==(const char *str) const{
+bool String::operator==(const char *str) const{
 	if(str == NULL && this->data == NULL){
 		return true;
 	}
@@ -53,16 +53,16 @@ bool operator==(const char *str) const{
 	return (strcmp(str, this->data) == 0);
 }
 
-bool operator==(const String &other) const{
+bool String::operator==(const GenericString &other) const{
 	//NULL?
-	return (strcmp(other.data, this->data) == 0);
+	return (strcmp(other.as_string().get_data(), this->data) == 0);
 }
 
-int to_integer() const{
+int String::to_integer() const{
 	return atoi(this->data);
 }
 
-String& trim() {
+GenericString& String::trim() {
 	//find beginning and end indexes that don't contain spaces
     int start = 0;
     while (isspace(this->data[start])) {
@@ -97,11 +97,11 @@ String& trim() {
     return *this;
 }
 
-String& as_string(){
+String& String::as_string(){
 	return dynamic_cast<String&>(*this);
 }
 
-const String& as_string() const{
+const String& String::as_string() const{
 	return dynamic_cast<const String&>(*this);
 }
 
@@ -110,7 +110,7 @@ GenericString* make_string(const char *str){
 	return s;
 }
 
-StringArray split(const char *delimiters) const{
+StringArray String::split(const char *delimiters) const{
 	char *token = strtok(this->data, delimiters);
 	StringArray strings;
 

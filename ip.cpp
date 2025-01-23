@@ -45,16 +45,23 @@ bool IP::match(const GenericString &packet) const{
 	copied_packet.trim();
 	StringArray packet_words = copied_packet.split(",=. ");
 
-	switch (this->dir){
-		default:
-		case SRC:
-			unsigned int packet_src_ip = calculate_ip_address(packet_words, 1);
-			return this->compare_ip_with_mask(packet_src_ip);
+	// switch (this->dir){
+	// 	default:
+	// 	case SRC:
+	// 		unsigned int packet_src_ip = calculate_ip_address(packet_words, 1);
+	// 		return this->compare_ip_with_mask(packet_src_ip);
 
-		break;
-		case DST:
-			unsigned int packet_dst_ip = calculate_ip_address(packet_words, 5);
-			return this->compare_ip_with_mask(packet_dst_ip);
-		break;
+	// 	break;
+	// 	case DST:
+	// 		unsigned int packet_dst_ip = calculate_ip_address(packet_words, 5);
+	// 		return this->compare_ip_with_mask(packet_dst_ip);
+	// 	break;
+	// }
+	if(this->dir == SRC){
+		unsigned int packet_src_ip = calculate_ip_address(packet_words, 1);
+		return this->compare_ip_with_mask(packet_src_ip);
 	}
+	unsigned int packet_dst_ip = calculate_ip_address(packet_words, 5);
+	return this->compare_ip_with_mask(packet_dst_ip);
+
 }

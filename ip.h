@@ -3,7 +3,7 @@
 #include "generic-field.h"
 enum direction {SRC, DST};
 class IP: public GenericField {
-	enum direction dir;
+	direction dir;
 	int mask;
 	unsigned int address;
 	bool compare_ip_with_mask(unsigned int other_ip) const;
