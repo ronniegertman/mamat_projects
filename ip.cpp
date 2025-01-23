@@ -38,10 +38,7 @@ bool IP::compare_ip_with_mask(unsigned int other_ip)const{
 }
 
 bool IP::match(const GenericString &packet) const{
-	String* test = new String("fuck");
-	delete test;
-	String packet_as_string = packet.as_string();
-	String copied_packet(packet_as_string);
+	String copied_packet(packet.as_string());
 	copied_packet.trim();
 	StringArray packet_words = copied_packet.split(",=. ");
 

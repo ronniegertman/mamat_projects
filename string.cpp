@@ -1,10 +1,10 @@
-#include <string.h>
 #include "string.h"
-
+#include <cstdlib>
+#include <cctype>
 
 // using namespace String;
 //default constructor
-String::String(const char* str = "")
+String::String(const char* str)
 : length(strlen(str)), data(new char[length + 1])
 {
 	strcpy(data, str);
