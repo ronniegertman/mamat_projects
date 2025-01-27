@@ -41,11 +41,12 @@ while IFS= read -r line; do
     # Process the packets through the firewall
     current_packets="$(echo "$packets" | ./firewall.exe "$A1" | ./firewall.exe "$A2" | ./firewall.exe "$A3" | ./firewall.exe "$A4")"
     #Append the result to filtered_packets
-    sed "s#src-ip#\nsrc-ip#g" <<<"$current_packets"
+    tmp=$(echo "$current_packets" | sed $'s#src-ip#\\nsrc-ip#g')
     # echo $current_packets
-    current_packets+="$current_packets"
-    
-    filtered_packets="$current_packets$filtered_packets"
+    filtered_packets+="$tmp"
+ 
+    # filtered_packets="$current_packets$filtered_packets" 
 done < "$rules"
+printf "%s\n" "$filtered_packets" | sort -n | uniq | sed 's# ##g'
  
  
