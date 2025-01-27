@@ -33,23 +33,19 @@ while IFS= read -r line; do
     line="$(sed -e 's/#.*//g' <<<"$line")"
     # Ignore empty lines
     [[ -z "$line" ]] && continue
-
-    
     # Extract fields from the line
     A1="$(cut -d',' -f1 <<<"$line")"
     A2="$(cut -d',' -f2 <<<"$line")"
     A3="$(cut -d',' -f3 <<<"$line")"
     A4="$(cut -d',' -f4 <<<"$line")"
     # Process the packets through the firewall
-    # current_packets="$(echo "$packets" | ./firewall.exe "$A1" | ./firewall.exe "$A2" | ./firewall.exe "$A3" | ./firewall.exe "$A4")"
-    input1="$(echo "$packets" | ./firewall.exe "$A1")"
-    echo $input1
-    # input2="$(echo "$input1" | ./firewall.exe "$A2")"
-    #| ./firewall.exe "$A2" | ./firewall.exe "$A3" | ./firewall.exe "$A4"
+    current_packets="$(echo "$packets" | ./firewall.exe "$A1" | ./firewall.exe "$A2" | ./firewall.exe "$A3" | ./firewall.exe "$A4")"
+    #Append the result to filtered_packets
+    sed "s#src-ip#\nsrc-ip#g" <<<"$current_packets"
     # echo $current_packets
-    # Append the result to filtered_packets
-    # filtered_packets="$current_packets$filtered_packets"
+    current_packets+="$current_packets"
+    
+    filtered_packets="$current_packets$filtered_packets"
 done < "$rules"
-
-
-
+ 
+ 
