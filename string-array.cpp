@@ -1,5 +1,6 @@
 #include "string-array.h"
 #include <string.h>
+#include <stdio.h>
 
 StringArray::StringArray(){
 	this->size = 0;
@@ -21,6 +22,14 @@ StringArray::~StringArray(){
   	for (GenericString* str : this->array) {
     	delete str; 
 	}
+}
+
+void StringArray::Print(){
+    printf("print length of %d\n", this->length());
+    for (int i=0; i<this->length(); i++) {
+        printf("%s ", this->getValue(i)->as_string().get_data()); 
+    }
+    printf("\n");
 }
 
 void StringArray::addString(const char* str){

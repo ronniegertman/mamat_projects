@@ -1,0 +1,43 @@
+==45446== Memcheck, a memory error detector
+==45446== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==45446== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==45446== Command: ./firewall.exe src-ip=241.1.205.106/32
+==45446== Parent PID: 36168
+==45446== 
+==45446== Invalid read of size 8
+==45446==    at 0x485138F: StringArray::getValue(int) const (string-array.cpp:33)
+==45446==    by 0x4850280: calculate_ip_address(StringArray, int) (ip.cpp:30)
+==45446==    by 0x48503F9: IP::match(GenericString const&) const (ip.cpp:64)
+==45446==    by 0x48583B7: parse_input(GenericField const&) (input.cpp:38)
+==45446==    by 0x109367: main (main.cpp:26)
+==45446==  Address 0x8 is not stack'd, malloc'd or (recently) free'd
+==45446== 
+==45446== 
+==45446== Process terminating with default action of signal 11 (SIGSEGV)
+==45446==  Access not within mapped region at address 0x8
+==45446==    at 0x485138F: StringArray::getValue(int) const (string-array.cpp:33)
+==45446==    by 0x4850280: calculate_ip_address(StringArray, int) (ip.cpp:30)
+==45446==    by 0x48503F9: IP::match(GenericString const&) const (ip.cpp:64)
+==45446==    by 0x48583B7: parse_input(GenericField const&) (input.cpp:38)
+==45446==    by 0x109367: main (main.cpp:26)
+==45446==  If you believe this happened as a result of a stack
+==45446==  overflow in your program's main thread (unlikely but
+==45446==  possible), you can try to increase the size of the
+==45446==  main thread stack using the --main-stacksize= flag.
+==45446==  The main thread stack size used in this run was 8388608.
+==45446== 
+==45446== HEAP SUMMARY:
+==45446==     in use at exit: 195 bytes in 6 blocks
+==45446==   total heap usage: 7,046 allocs, 7,040 frees, 235,481 bytes allocated
+==45446== 
+==45446== LEAK SUMMARY:
+==45446==    definitely lost: 0 bytes in 0 blocks
+==45446==    indirectly lost: 0 bytes in 0 blocks
+==45446==      possibly lost: 0 bytes in 0 blocks
+==45446==    still reachable: 195 bytes in 6 blocks
+==45446==         suppressed: 0 bytes in 0 blocks
+==45446== Reachable blocks (those to which a pointer was found) are not shown.
+==45446== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==45446== 
+==45446== For lists of detected and suppressed errors, rerun with: -s
+==45446== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

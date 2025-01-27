@@ -36,6 +36,9 @@ int Port::extract_port_from_packet(StringArray packet_words) const{
 };
 
 bool Port::match(const GenericString &packet) const{
+	if(packet.as_string().get_data()[0] == '\0'){
+		return false;
+	}
 	String copied_packet(packet.as_string());
 	copied_packet.trim();
 	StringArray packet_words = copied_packet.split(",=. ");

@@ -14,6 +14,7 @@ public:
 	StringArray(const StringArray& other);
 	~StringArray();
 
+	void Print();
 	void addString(const char* str);
 	GenericString* getValue(const int index) const;
 	int length() const;

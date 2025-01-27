@@ -3,12 +3,13 @@
 #include "string.h"
 #include "string-array.h"
 #include <string.h>
+#include <stdio.h>
 
 static const int BUFFER_SIZE = 32;
 static unsigned int calculate_ip_address(StringArray words, int index);
 
 IP::IP(String& rule){
-	rule.trim();
+	rule.trim();	
 	StringArray words = rule.split(" =/.");
 
 	//using override of == operator in GenericString
@@ -38,22 +39,14 @@ bool IP::compare_ip_with_mask(unsigned int other_ip)const{
 }
 
 bool IP::match(const GenericString &packet) const{
+	if(packet.as_string().get_data()[0] == '\0'){
+		return false;
+	}
 	String copied_packet(packet.as_string());
+	// printf("packet: %s\n copied_packet: %s\n\n", packet.as_string().get_data(), copied_packet.as_string().get_data());
 	copied_packet.trim();
-	StringArray packet_words = copied_packet.split(",=. ");
+	StringArray packet_words = copied_packet.split(",=. /");
 
-	// switch (this->dir){
-	// 	default:
-	// 	case SRC:
-	// 		unsigned int packet_src_ip = calculate_ip_address(packet_words, 1);
-	// 		return this->compare_ip_with_mask(packet_src_ip);
-
-	// 	break;
-	// 	case DST:
-	// 		unsigned int packet_dst_ip = calculate_ip_address(packet_words, 5);
-	// 		return this->compare_ip_with_mask(packet_dst_ip);
-	// 	break;
-	// }
 	if(this->dir == SRC){
 		unsigned int packet_src_ip = calculate_ip_address(packet_words, 1);
 		return this->compare_ip_with_mask(packet_src_ip);
