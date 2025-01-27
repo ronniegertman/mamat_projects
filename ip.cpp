@@ -18,6 +18,7 @@ IP::IP(String& rule){
 	}else if(*(words.getValue(0)) == "dst-ip"){
 		this->dir = DST;
 	}
+
  
  	int length = words.length();
 	this->mask = words.getValue(length - 1)->to_integer(); //words[n] is genericString*
@@ -35,6 +36,10 @@ static unsigned int calculate_ip_address(StringArray words, int index){
 }
 
 bool IP::compare_ip_with_mask(unsigned int other_ip)const{
+	// printf("here\n");
+	// printf("%u\n", other_ip);
+	// printf("%u\n", this->address);
+	// printf("\n\n");
 	return (other_ip >> (BUFFER_SIZE - this->mask)) == (this->address >> (BUFFER_SIZE - this->mask));
 }
 
@@ -46,12 +51,11 @@ bool IP::match(const GenericString &packet) const{
 	// printf("packet: %s\n copied_packet: %s\n\n", packet.as_string().get_data(), copied_packet.as_string().get_data());
 	copied_packet.trim();
 	StringArray packet_words = copied_packet.split(",=. /");
-
 	if(this->dir == SRC){
 		unsigned int packet_src_ip = calculate_ip_address(packet_words, 1);
 		return this->compare_ip_with_mask(packet_src_ip);
 	}
-	unsigned int packet_dst_ip = calculate_ip_address(packet_words, 5);
+	unsigned int packet_dst_ip = calculate_ip_address(packet_words, 6);
 	return this->compare_ip_with_mask(packet_dst_ip);
 
 }
